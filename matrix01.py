@@ -10,7 +10,8 @@ def main():
     S = np.zeros((n_by_n, n_by_n), dtype=np.int16)
     S = axis(S)
     S = square(S, 256, (256, 256))
-    S = circle(S, 128, (256, 256))
+    S = circle(S, 64, (128, 128))  # (256,256)
+    S = diag(S)
 
     img = Image.fromarray(S)
     img.show()
@@ -33,6 +34,29 @@ def axis(arr):
                 arr[i][j] = 255
             j = j+1
         i = i + 1
+    return arr
+
+
+def diag(arr):
+    i = 0
+    while i < len(arr[:]):
+        j = 0
+        while j < len(arr[0][:]):
+            if i == j:
+                arr[i][j] = 255
+            j = j + 1
+        i = i + 1
+
+    i = len(arr[:])-1
+
+    while i >= 0:
+        j = 0
+        while j < len(arr[:]):
+            if (i + j) == 512:
+                arr[i][j] = 255
+            j = j+1
+        i = i - 1
+
     return arr
 
 
@@ -81,14 +105,14 @@ def circle(arr, rad, origin):
     # y = rad * sin(theta) + y offset
     i = 0
     while i <= slices:
-        x = int(rad*np.cos(i*pi/slices) + z1)
-        y = int(rad*np.sin(i*pi/slices) + z2)
+        x = int(rad*np.cos(i*2*pi/slices) + z1)
+        y = int(rad*np.sin(i*2*pi/slices) + z2)
         coords.append([x, y])
         i = i + 1
 
     for coord in coords:
         arr[coord[0]][coord[1]] = 255
-        arr[coord[0]][-1*coord[1]] = 255
+        # arr[-1*coord[1]][coord[0]] = 255
 
         # add some fuzz
         # arr[coord[0]+1][coord[1]] = 200
