@@ -12,6 +12,7 @@ def main():
     S = square(S, 256, (256, 256))
     S = circle(S, 64, (128, 128))  # (256,256)
     S = diag(S)
+    S = randomize(S)
 
     img = Image.fromarray(S)
     img.show()
@@ -112,13 +113,21 @@ def circle(arr, rad, origin):
 
     for coord in coords:
         arr[coord[0]][coord[1]] = 255
-        # arr[-1*coord[1]][coord[0]] = 255
 
-        # add some fuzz
-        # arr[coord[0]+1][coord[1]] = 200
-        # arr[coord[0]][coord[1]+1] = 128
-        # arr[coord[0]-1][coord[1]-1] = 200
+    return arr
 
+
+def randomize(arr):
+    i = 0
+    while i < len(arr[:]):
+        j = 0
+        while j < len(arr[0][:]):
+            if arr[i][j] > 200:
+                pass
+            else:
+                arr[i][j] = np.random.randint(0, 255)
+            j = j+1
+        i = i+1
     return arr
 
 
